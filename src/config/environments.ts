@@ -1,22 +1,22 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const botToken = () => {
-	const BOT_TOKEN = process.env.BOT_TOKEN;
+enum Environment {
+	BOT_TOKEN = 'BOT_TOKEN',
+	OPENAI_API_KEY = 'OPENAI_API_KEY',
+}
 
-	if (!BOT_TOKEN) {
-		throw new Error('Please, set BOT_TOKEN environment variable');
-	}
+type TEnvironments = keyof typeof Environment;
 
-	return BOT_TOKEN;
+const envs = {
+	BOT_TOKEN: process.env.BOT_TOKEN,
+	OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 };
 
-export const openAIApiKey = () => {
-	const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-  
-	if(!OPENAI_API_KEY) {
-		throw new Error('Please, set OPENAI_API_KEY environment variable');
-	}
-  
-	return OPENAI_API_KEY;
+export const environment = (key: TEnvironments) => {
+	const env = envs[key];
+
+	if (!env) throw new Error(`Please, set ${key} environment variable`);
+	
+	return env;
 };

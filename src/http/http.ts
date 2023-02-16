@@ -1,8 +1,8 @@
 import { Telegraf } from 'telegraf';
-import { botToken } from '../config/environments';
+import { environment } from '../config/environments';
 
 const telegrafInstance = () => {
-	const bot = new Telegraf(botToken());
+	const bot = new Telegraf(environment('BOT_TOKEN'));
 
 	return bot;
 };
