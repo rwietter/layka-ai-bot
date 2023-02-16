@@ -1,4 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+yarn lint
+yarn commit
+
+
+# npx lint-staged
+# {
+#   "*.{js,jsx,ts,tsx}": [
+#     "eslint --fix",
+#     "git add"
+#   ]
+# }
