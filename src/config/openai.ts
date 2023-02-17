@@ -12,11 +12,8 @@ type Paramenters = CreateCompletionRequest;
 
 export const paramenters: Paramenters  = {
 	top_p: 1,
-	stop: '```',
-	temperature: 0,
-	suffix: '\n```',
-	max_tokens: 1000,
-	presence_penalty: 0,
-	frequency_penalty: 0,
+	temperature: 0.7,
+	max_tokens: 256,
+	best_of: 1,
 	model: 'text-davinci-003',
 };

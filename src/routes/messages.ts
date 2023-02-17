@@ -22,6 +22,8 @@ bot.on('message', async (ctx) => {
 				...paramenters,
 				prompt: message,
 			});
+
+			console.log('COMPLETION', completion.data.choices);
 	
 			const response = completion.data.choices[0].text;
 
