@@ -8,7 +8,7 @@ import path from 'node:path';
 
 const filename = path.basename(__filename);
 
-const currentFile = (file: string) => file !== filename;
+const ignoreCurrentFile = (file: string) => file !== filename;
 
 const addPriority = (file: string) => {
 	return {
@@ -17,18 +17,17 @@ const addPriority = (file: string) => {
 	};
 };
 
-type Priority = {
-	priority: number;
-};
-
 const priority = (a: Priority, b: Priority) => b.priority - a.priority;
+
+const importRoutes = async ({ file }: File) => (await import(`./${file}`));
 
 export const setupRoutes = () => {
 	readdirSync(__dirname)
-		.filter(currentFile)
+		.filter(ignoreCurrentFile)
 		.map(addPriority)
 		.sort(priority)
-		.map(async ({ file }) => {
-			return (await import(`./${file}`));
-		});
+		.map(importRoutes);
 };
+
+type File = { file: string; };
+type Priority = { priority: number; };

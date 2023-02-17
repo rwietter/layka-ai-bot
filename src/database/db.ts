@@ -16,10 +16,12 @@ const getMongoSingletonInstance = () => {
 
 const mongo = getMongoSingletonInstance();
 const client = mongo();
-const init = async () => await client.connect();
+
+const initDatabase = async () => await client.connect();
+
 export const db = client.db('layka');
 
-init()
+initDatabase()
 	.then(() => console.log('Connected successfully to server'))
 	.catch(() => {
 		console.log('Error connecting to server');

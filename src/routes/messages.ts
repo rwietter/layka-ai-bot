@@ -2,12 +2,13 @@ import { Message } from 'telegraf/typings/core/types/typegram';
 import { db } from '../database/db';
 import { bot } from '../http/http';
 import { openai, paramenters } from '../config/openai';
+import { HttpReponseError } from '../@types';
 
 bot.on('message', async (ctx) => {
 	try {
 		const message = (ctx.message as Message.TextMessage).text;
 
-		if (!message) return ctx.telegram.sendMessage(ctx.chat.id, 'Opss... I can\'t understand you.');
+		if (!message) return ctx.telegram.sendMessage(ctx.chat.id, 'Please, send me a message.');
 
 		const collection = db.collection('open_api_key');
 		const apiKey = await collection.findOne({ user_id: ctx.from.id });
@@ -27,15 +28,16 @@ bot.on('message', async (ctx) => {
 			if(!response) return ctx.telegram.sendMessage(ctx.chat.id, 'Opss... I can\'t understand you.');
 
 			return ctx.telegram.sendMessage(ctx.chat.id, response);
-		} catch (error: any) {
+		} catch (err: unknown) {
+			const error = err as HttpReponseError;
 			if (error.response) {
-				console.log(error.response.status);
-				console.log(error.response.data);
+				console.log('OPEN AI ERROR RESPONSE', error.response);
 			} else {
-				console.log(error.message);
+				console.log('OPEN AI ERROR', error);
 			}
 		}
-	} catch (error: any) {
-		console.log('Error', error.message);
+	} catch (err: unknown) {
+		const error = err as HttpReponseError;
+		console.log('MESSAGE ERROR', error.message);
 	}
 });
