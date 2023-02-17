@@ -3,14 +3,14 @@ dotenv.config();
 
 enum Environment {
 	BOT_TOKEN = 'BOT_TOKEN',
-	OPENAI_API_KEY = 'OPENAI_API_KEY',
+	MONGO_URL = 'MONGO_URL',
 }
 
 type TEnvironments = keyof typeof Environment;
 
 const envs = {
 	BOT_TOKEN: process.env.BOT_TOKEN,
-	OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+	MONGO_URL: process.env.MONGO_URL,
 };
 
 export const environment = (key: TEnvironments) => {
