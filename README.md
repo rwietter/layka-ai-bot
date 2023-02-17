@@ -27,6 +27,8 @@ npm run dev or yarn dev
 - [x] Start chat message
 - [x] Receive messages from users and send response with answer from GPT-3
 - [x] Store API KEY in database
-- [ ] Delete API KEY command
+- [x] Delete API KEY command
 - [ ] Update API KEY command
-- [ ] /send command to send messages from groups 
+- [ ] /send command to send messages from groups
+- [ ] Validate API KEY
+- [ ] Add logger tool to capture errors
