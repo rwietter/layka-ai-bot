@@ -5,7 +5,7 @@ import './database/db';
 
 setupRoutes();
 
-if(process.env.environment == 'PRODUCTION'){
+if(process.env.NODE_ENV == 'PRODUCTION'){
 	bot.launch({
 		webhook:{
 			domain: 'layka.up.railway.app',
