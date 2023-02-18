@@ -29,6 +29,8 @@ npm run dev or yarn dev
 - [x] Store API KEY in database
 - [x] Delete API KEY command
 - [x] Update API KEY command
+- [x] /lang command to set programming language
 - [ ] /send command to send messages from groups
 - [ ] Validate API KEY
+- [ ] Middleware to validate API KEY
 - [ ] Add logger tool to capture errors
