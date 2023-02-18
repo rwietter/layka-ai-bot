@@ -14,7 +14,7 @@ bot.command('help', async (ctx) => {
 	await ctx.telegram.sendMessage(ctx.chat.id, helpMsg);
 });
 
-bot.command('set_key', async (ctx) => {
+bot.command('set', async (ctx) => {
 	try {
 		const [, apiKey] = ctx.message.text.split(' ');
 
@@ -46,7 +46,7 @@ bot.command('set_key', async (ctx) => {
 	}
 });
 
-bot.command('delete_key', async (ctx) => {
+bot.command('delete', async (ctx) => {
 	try {
 		const userId = ctx.from.id;
 
@@ -69,7 +69,7 @@ bot.command('delete_key', async (ctx) => {
 	}
 });
 
-bot.command('update_key', async (ctx) => {
+bot.command('update', async (ctx) => {
 	try {
 		const [, apiKey] = ctx.message.text.split(' ');
 
@@ -101,5 +101,33 @@ bot.command('update_key', async (ctx) => {
 		const error = err as HttpReponseError;
 		if (error.response) return console.log('UPDATE KEY ERROR', error.response.data);
 		console.log(error.message);		
+	}
+});
+
+bot.command('lang', async (ctx) => {
+	try {
+		const [, progLang] = ctx.message.text.split(' ');
+
+		if (!progLang)
+			return ctx.telegram.sendMessage(ctx.chat.id, 'Please provide a programming language. Example: /lang python');
+		
+		const collection = db.collection('prog_lang');
+
+		const response = await collection.updateOne({ user_id: ctx.from.id }, {
+			$set: {
+				prog_lang: progLang.trim().toLowerCase(),
+			},
+		}, {
+			upsert: true,
+		});
+
+		if (response.acknowledged)
+			return ctx.telegram.sendMessage(ctx.chat.id, 'Programming language set successfully!');
+		
+		return ctx.telegram.sendMessage(ctx.chat.id, 'Error setting programming language. Please try again.');
+	} catch (err) {
+		const error = err as HttpReponseError;
+		if (error.response) return console.log('SET PROG LANG ERROR', error.response.data);
+		console.log(error.message);
 	}
 });
