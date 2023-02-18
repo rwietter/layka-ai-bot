@@ -1,24 +1,28 @@
 import { bot } from './http/http';
 import { setupRoutes } from './routes';
+import express from 'express';
+
+const app = express();
 
 import './database/db';
 
 setupRoutes();
 
-if(process.env.environment == 'PRODUCTION'){
-	bot.launch({
-		webhook:{
-			domain: 'https://layka.herokuapp.com/telegraf/3fc99407e2d79a3aa30901511a91c9b2b7bc7a60972ab7aa217dadf341b5',
-			port: 8000
-		}
-	}).then(() => {
-		console.info('production', bot.botInfo);
-	});
+app.use(bot.webhookCallback('/bot'));
+
+if (process.env.NODE_ENV === 'production') {
+	bot.telegram.setWebhook('https://layka.herokuapp.com/bot');
 } else {
-	bot.launch().then(() => {
-		console.info('local', bot.botInfo);
-	});
+	bot.launch();
 }
+
+app.get('/', (req, res) => {
+	res.send('Our new tab!!');
+});
+
+app.listen(8000, '0.0.0.0', () => {
+	console.log(`Listen in the port ${8000}`);
+});
 
 bot.telegram.getWebhookInfo().then((info) => {
 	console.log(info);
