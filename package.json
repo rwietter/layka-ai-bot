@@ -7,7 +7,9 @@
     "commit": "git-cz",
     "prepare": "husky install",
     "lint": "eslint 'src/**/*.ts' --fix",
-    "dev": "tsnd --respawn --transpile-only src/index.ts"
+    "dev": "tsnd --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
