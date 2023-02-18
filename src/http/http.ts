@@ -1,4 +1,4 @@
 import { Telegraf } from 'telegraf';
 import { environment } from '../config/environments';
 
-export const bot = new Telegraf(environment('BOT_TOKEN'));
+export const bot = new Telegraf(environment('BOT_TOKEN')).catch(console.log);
