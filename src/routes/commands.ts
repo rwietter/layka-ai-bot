@@ -2,6 +2,7 @@ import { bot } from '../http/http';
 import { db } from '../database/db';
 import { OPENAI_API_KEY_LENGTH } from '../constants/constants';
 import { HttpReponseError } from '../@types';
+import { sendMessage } from '../controllers/send.message';
 
 const helpMsg = `Command reference:
 /start - Start bot (mandatory in groups)
@@ -9,6 +10,7 @@ const helpMsg = `Command reference:
 /update_key - Update your OpenAI API key
 /delete_key - Delete your OpenAI API key
 `;
+
 
 bot.command('help', async (ctx) => {
 	await ctx.telegram.sendMessage(ctx.chat.id, helpMsg);
@@ -130,4 +132,8 @@ bot.command('lang', async (ctx) => {
 		if (error.response) return console.log('SET PROG LANG ERROR', error.response.data);
 		console.log(error.message);
 	}
+});
+
+bot.command('send', (ctx) => {
+	sendMessage(ctx, 'send');
 });
