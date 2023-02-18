@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { environment } from '../config/environments';
 
-const url = environment('MONGO_URL');
+const url = process.env.MONGO_URL || environment('MONGO_URL');
 
 const getMongoSingletonInstance = () => {
 	let instance: MongoClient;
@@ -22,8 +22,8 @@ const initDatabase = async () => await client.connect();
 export const db = client.db('layka');
 
 initDatabase()
-	.then(() => console.log('Connected successfully to server'))
-	.catch(() => {
-		console.log('Error connecting to server');
+	.then(() => console.log('Connected successfully to database'))
+	.catch((error) => {
+		console.log('Error connecting to database', error.message);
 		client.close();
 	});
