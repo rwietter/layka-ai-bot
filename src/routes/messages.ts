@@ -22,6 +22,8 @@ bot.on('message', async (ctx) => {
 				...paramenters,
 				prompt: message,
 			});
+
+			console.log('COMPLETION', completion.data.choices);
 	
 			const response = completion.data.choices[0].text;
 
@@ -31,10 +33,10 @@ bot.on('message', async (ctx) => {
 		} catch (err: unknown) {
 			const error = err as HttpReponseError;
 			if (error.response) {
-				console.log('OPEN AI ERROR RESPONSE', error.response);
-			} else {
-				console.log('OPEN AI ERROR', error);
+				console.log('OPEN AI ERROR RESPONSE', error.response.data);
+				return ctx.telegram.sendMessage(ctx.chat.id, String(error.response.data.error.message));
 			}
+			console.log('OPEN AI ERROR', error);
 		}
 	} catch (err: unknown) {
 		const error = err as HttpReponseError;

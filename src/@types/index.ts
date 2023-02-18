@@ -2,7 +2,12 @@ type ErrorResponse = {
   response: {
     status: number;
     data: {
-      message: string;
+      error: {
+        message: string;
+        type: string;
+        param: string | null;
+        code: string;
+      }
     }
   };
 }
