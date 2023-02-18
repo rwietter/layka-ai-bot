@@ -68,3 +68,38 @@ bot.command('delete_key', async (ctx) => {
 		console.log(error.message);
 	}
 });
+
+bot.command('update_key', async (ctx) => {
+	try {
+		const [, apiKey] = ctx.message.text.split(' ');
+
+		if (!apiKey)
+			return ctx.telegram.sendMessage(ctx.chat.id, 'Please provide an API key. Example: /update_key sk-1234567890');
+		
+		if (apiKey.length !== OPENAI_API_KEY_LENGTH)
+			return ctx.telegram.sendMessage(ctx.chat.id, 'Please provide a valid API key (51 characters)');
+		
+		const collection = db.collection('open_api_key');
+
+		const exists = await collection.findOne({ user_id: ctx.from.id });
+
+		if (!exists)
+			return ctx.telegram.sendMessage(ctx.chat.id, 'API key not found. Please use /set_key to set your API key.');
+		
+		const isUpdated = await collection.findOneAndUpdate({
+			user_id: ctx.from.id,
+		}, {
+			$set: {
+				api_key: apiKey,
+			},
+		});
+
+		if (isUpdated.ok) return ctx.telegram.sendMessage(ctx.chat.id, 'API key updated successfully!');
+
+		return ctx.telegram.sendMessage(ctx.chat.id, 'Error updating API key. Please try again.');
+	} catch (err) {
+		const error = err as HttpReponseError;
+		if (error.response) return console.log('UPDATE KEY ERROR', error.response.data);
+		console.log(error.message);		
+	}
+});
