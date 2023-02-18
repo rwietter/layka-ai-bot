@@ -8,7 +8,7 @@ setupRoutes();
 if(process.env.NODE_ENV == 'PRODUCTION'){
 	bot.launch({
 		webhook:{
-			domain: 'layka.up.railway.app',
+			domain: String(process.env.WEBHOOK_URL),
 			port: 8000
 		}
 	}).then(() => {
