@@ -18,17 +18,17 @@ bot.on('message', async (ctx) => {
 		try {
 			const ai = openai(apiKey.api_key);
 
+			const highlight = '\n```rust';
+
 			const completion = await ai.createCompletion({
 				...paramenters,
-				prompt: message,
+				prompt: `${message}:${highlight}`,
 			});
 
-			console.log('COMPLETION', completion.data.choices);
-	
 			const response = completion.data.choices[0].text;
-
-			if(!response) return ctx.telegram.sendMessage(ctx.chat.id, 'Opss... I can\'t understand you.');
-
+			
+			if(!response || !response.trim()) return ctx.telegram.sendMessage(ctx.chat.id, 'Opss... I can\'t understand you.');
+			
 			return ctx.telegram.sendMessage(ctx.chat.id, response);
 		} catch (err: unknown) {
 			const error = err as HttpReponseError;

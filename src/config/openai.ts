@@ -11,9 +11,10 @@ export const openai = (apiKey: string) => {
 type Paramenters = CreateCompletionRequest;
 
 export const paramenters: Paramenters  = {
-	top_p: 1,
-	temperature: 0.7,
-	max_tokens: 256,
-	best_of: 1,
-	model: 'text-davinci-003',
+	model: 'code-davinci-002',
+	stop: '```',
+	temperature: 0,
+	max_tokens: 1000,
+	presence_penalty: 0,
+	frequency_penalty: 0,
 };
