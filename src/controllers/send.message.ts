@@ -20,12 +20,12 @@ const sendMessage = async (ctx: NarrowedContext<Context<Update>, Update.MessageU
 		if (!message) return ctx.telegram.sendMessage(ctx.chat.id, 'Please, send me a message.');
 
 		const keyCollection = db.collection('open_api_key');
-		const apiKey = await keyCollection.findOne({ user_id: ctx.from.id });
+		const apiKey = await keyCollection.findOne({ user_id: ctx.from.id }) || { api_key: ''};
 
 		const langCollection = db.collection('prog_lang');
 		const lang = await langCollection.findOne({ user_id: ctx.from.id });
 
-		if(!apiKey) return ctx.telegram.sendMessage(ctx.chat.id, 'API key not found. Please use /set_key to set your API key.');
+		// if(!apiKey) return ctx.telegram.sendMessage(ctx.chat.id, 'API key not found. Please use /set_key to set your API key.');
 
 		try {
 			const ai = openai(apiKey.api_key);

@@ -13,11 +13,11 @@ const ignoreCurrentFile = (file: string) => file !== filename;
 const addPriority = (file: string) => {
 	return {
 		file,
-		priority: file.match(/messages/g) ? 0 : 1,
+		priority: file.match(/messages/g) ? 3 : file.match(/start/g) ? 1 : 2,
 	};
 };
 
-const priority = (a: Priority, b: Priority) => b.priority - a.priority;
+const priority = (a: Priority, b: Priority) => a.priority - b.priority;
 
 const importRoutes = async ({ file }: File) => (await import(`./${file}`));
 

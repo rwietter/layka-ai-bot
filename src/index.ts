@@ -5,7 +5,7 @@ import './database/db';
 
 setupRoutes();
 
-if(process.env.NODE_ENV == 'PRODUCTION'){
+if(process.env.NODE_ENV == 'production'){
 	bot.launch({
 		webhook:{
 			domain: String(process.env.WEBHOOK_URL),
