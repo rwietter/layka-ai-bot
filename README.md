@@ -31,6 +31,6 @@ npm run dev or yarn dev
 - [x] Update API KEY command
 - [x] /lang command to set programming language
 - [x] /send command to send messages from groups
-- [ ] Validate API KEY
-- [ ] Middleware to validate API KEY
+- [x] Validate API KEY
+- [x] Middleware to validate API KEY
 - [ ] Add logger tool to capture errors

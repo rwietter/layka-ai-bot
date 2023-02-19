@@ -3,13 +3,16 @@ import { db } from '../database/db';
 import { OPENAI_API_KEY_LENGTH } from '../constants/constants';
 import { HttpReponseError } from '../@types';
 import { sendMessage } from '../controllers/send.message';
+import { OpenAiKeyCheck } from '../middleware/openai.midd';
 
 const helpMsg = `Command reference:
 /start - Start bot (mandatory in groups)
-/set_key - Set your OpenAI API key
-/update_key - Update your OpenAI API key
-/delete_key - Delete your OpenAI API key
+/set - Set your OpenAI API key
+/update - Update your OpenAI API key
+/delete - Delete your OpenAI API key
 `;
+
+const APIKEYMASK = /^[a-z]{2}-[a-zA-Z0-9]{48}$/;
 
 
 bot.command('help', async (ctx) => {
@@ -25,15 +28,18 @@ bot.command('set', async (ctx) => {
 	
 		if (apiKey.length !== OPENAI_API_KEY_LENGTH) 
 			return await ctx.telegram.sendMessage(ctx.chat.id, 'Please provide a valid API key (51 characters)');
+		
+		if (!APIKEYMASK.test(apiKey))
+			return await ctx.telegram.sendMessage(ctx.chat.id, 'Please provide a valid API key (51 characters). Example: sk-{48 alphanumeric characters}');
 	
-		const collection = db.collection('open_api_key');
+		const openAiCollection = db.collection('open_api_key');
 	
-		const alreadyExists = await collection.findOne({ user_id: ctx.from.id });
+		const alreadyExists = await openAiCollection.findOne({ user_id: ctx.from.id });
 
 		if (alreadyExists)
-			return await ctx.telegram.sendMessage(ctx.chat.id, 'You already have an API key set. Please use /update_key to update it.');
+			return await ctx.telegram.sendMessage(ctx.chat.id, 'You already have an API key set. Please use /update to update it.');
 	
-		const response = await collection.insertOne({
+		const response = await openAiCollection.insertOne({
 			user_id: ctx.from.id,
 			api_key: apiKey,
 		});
@@ -47,6 +53,8 @@ bot.command('set', async (ctx) => {
 		console.log('SET KEY ERROR', error.message);
 	}
 });
+
+bot.use(OpenAiKeyCheck);
 
 bot.command('delete', async (ctx) => {
 	try {
